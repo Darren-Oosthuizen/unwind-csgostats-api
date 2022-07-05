@@ -46,25 +46,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Remove Image
         run: docker rmi darrenoosthuizen/unwindcsgoapimem:1.0.1 || true
-        
-      # Runs a single command using the runners shell
-      - name: LS
-        run: ls
-        
-      - name: CD Into Dir
-        run: cd ./../
-        
-      - name: LS
-        run: ls
-        
-      - name: CD Into Dir
-        run: cd ./../../../
-        
-      - name: LS
-        run: ls
-        
-        
 
       # Runs a set of commands using the runners shell
-      #- name: Rebuild Image
-      #  run: docker-compose up --force-recreate
+      - name: Rebuild Image
+        run: docker-compose up --force-recreate
