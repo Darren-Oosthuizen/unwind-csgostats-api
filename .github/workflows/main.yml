@@ -37,15 +37,15 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Stop Container
-        run: docker stop UnwindCSGOApiMem
+        run: docker stop UnwindCSGOApiMem || true
         
       # Runs a single command using the runners shell
       - name: Remove Container
-        run: docker rm UnwindCSGOApiMem
+        run: docker rm UnwindCSGOApiMem || true
         
       # Runs a single command using the runners shell
       - name: Remove Image
-        run: docker rmi darrenoosthuizen/unwindcsgoapimem:1.0.1
+        run: docker rmi darrenoosthuizen/unwindcsgoapimem:1.0.1 || true
         
       # Runs a single command using the runners shell
       - name: CD Into Dir
