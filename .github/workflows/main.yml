@@ -15,6 +15,15 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  pull:
+    runs-on: self-hosted
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+      
+    - name: Git pull
+      run: git clone https://github.com/HenryLinde/unwind-csgostats-api.git
+       
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
