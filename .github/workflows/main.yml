@@ -41,7 +41,7 @@ jobs:
         
       # Runs a single command using the runners shell
       - name: Remove Image
-        run: docker rm darrenoosthuizen/unwindcsgoapimem:1.0.1
+        run: docker rmi darrenoosthuizen/unwindcsgoapimem:1.0.1
         
       # Runs a single command using the runners shell
       - name: CD Into Dir
