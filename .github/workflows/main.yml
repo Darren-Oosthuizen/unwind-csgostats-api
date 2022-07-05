@@ -49,7 +49,10 @@ jobs:
         
       # Runs a single command using the runners shell
       - name: CD Into Dir
-        run: cd ./../../unwind-csgostats-api/unwind-csgostats-api
+        run: cd ./../
+        
+      - name: LS
+        run: ls
 
       # Runs a set of commands using the runners shell
       - name: Rebuild Image
