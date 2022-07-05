@@ -40,6 +40,10 @@ jobs:
         run: docker stop UnwindCSGOApiMem
         
       # Runs a single command using the runners shell
+      - name: Remove Container
+        run: docker rm UnwindCSGOApiMem
+        
+      # Runs a single command using the runners shell
       - name: Remove Image
         run: docker rmi darrenoosthuizen/unwindcsgoapimem:1.0.1
         
