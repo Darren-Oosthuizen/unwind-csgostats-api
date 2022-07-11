@@ -222,7 +222,7 @@ public class PlayerService {
         DashboardStatObject most = new DashboardStatObject();
         most.setPlayerName(player.getName());
         most.setKey("Most Kills Through Smoke");
-        most.setValue(player.getWallbangKills().toString());
+        most.setValue(player.getSmokeKills().toString());
         return most;
     }
 
@@ -232,7 +232,7 @@ public class PlayerService {
         DashboardStatObject most = new DashboardStatObject();
         most.setPlayerName(player.getName());
         most.setKey("Most Kills While Flashed");
-        most.setValue(player.getWallbangKills().toString());
+        most.setValue(player.getKillsWhileFlashed().toString());
         return most;
     }
 
