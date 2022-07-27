@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,4 +19,5 @@ public class Game {
     private String map;
     private String ctscore;
     private String tscore;
+    private Date date;
 }

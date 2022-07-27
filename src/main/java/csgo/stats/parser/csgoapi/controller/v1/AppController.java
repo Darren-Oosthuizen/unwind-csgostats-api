@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"https://unwindcsgo.flystudio.co.za", "http://localhost:4200"}, maxAge = 3600)
 @RestController
+@CrossOrigin(origins = {"https://unwindcsgo.flystudio.co.za", "http://localhost:4200"}, maxAge = 3600)
 @RequestMapping("/api/v1/test/")
 public class AppController {
 
@@ -605,6 +605,172 @@ public class AppController {
         List<Round> rounds = games.get(0).getRounds();
         rounds.addAll(games.get(1).getRounds());
         game.setRounds(rounds);
+
+        return new ResponseEntity<>(game, HttpStatus.OK);
+    }
+
+    @PostMapping("/validate/game")
+    public ResponseEntity<Game> testValidateGame(@RequestBody Game game) {
+
+        for (Player player : game.getTeam1().getPlayers()) {
+            player.setKills(0);
+            player.setAssists(0);
+            player.setDeaths(0);
+            player.setDamage(0);
+            player.setTeamDamage(0);
+            player.setTeamKills(0);
+            player.setFlashAssists(0);
+            player.setHeadshots(0);
+            player.setWallbangKills(0);
+            player.setSmokeKills(0);
+            player.setFlashDuration(0d);
+            player.setTeamFlashDuration(0d);
+            player.setEnemiesFlashed(0);
+            player.setTeammatesFlashed(0);
+            player.setNoScopeKills(0);
+
+            for (Round round : game.getRounds()) {
+                for (Kill kill : round.getKills()) {
+                    if (kill.getKillerSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        if (kill.getHeadshot()) {
+                            player.setHeadshots(player.getHeadshots() + 1);
+                        }
+                        if (kill.getFriendly()) {
+                            player.setTeamKills(player.getTeamKills() + 1);
+                        } else {
+                            player.setKills(player.getKills() + 1);
+                        }
+                        if (kill.getNoscope()) {
+                            player.setNoScopeKills(player.getNoScopeKills() + 1);
+                        }
+                        if (kill.getPenetrated()) {
+                            player.setWallbangKills(player.getWallbangKills() + 1);
+                        }
+                        if (kill.getThroughSmoke()) {
+                            player.setSmokeKills(player.getSmokeKills() + 1);
+                        }
+                    }
+
+                    if (kill.getAssisted()) {
+                        if (kill.getAssisterSteamId().equalsIgnoreCase(player.getSteamid())) {
+                            if (!kill.getFriendly()) {
+                                player.setAssists(player.getAssists() + 1);
+                                if (kill.getFlashAssist()) {
+                                    player.setFlashAssists(player.getFlashAssists() + 1);
+                                }
+                            }
+                        }
+                    }
+
+                    if (kill.getKilledSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        player.setDeaths(player.getDeaths() + 1);
+                    }
+                }
+
+                for (Damage damage : round.getDamage()) {
+                    if (damage.getAttackerSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        if (damage.getFriendly()) {
+                            player.setTeamDamage(player.getTeamDamage() + damage.getDamage());
+                        } else {
+                            player.setDamage(player.getDamage() + damage.getDamage());
+                        }
+                    }
+                }
+
+                for (Flashbang flashbang : round.getFlashbangs()) {
+                    if (flashbang.getAttackerSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        if (flashbang.getFriendly()) {
+                            player.setTeamFlashDuration(player.getTeamFlashDuration() + flashbang.getDuration());
+                            player.setTeammatesFlashed(player.getTeammatesFlashed() + 1);
+                        } else {
+                            player.setFlashDuration(player.getFlashDuration() + flashbang.getDuration());
+                            player.setEnemiesFlashed(player.getEnemiesFlashed() + 1);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        for (Player player : game.getTeam2().getPlayers()) {
+            player.setKills(0);
+            player.setAssists(0);
+            player.setDeaths(0);
+            player.setDamage(0);
+            player.setTeamDamage(0);
+            player.setTeamKills(0);
+            player.setFlashAssists(0);
+            player.setHeadshots(0);
+            player.setWallbangKills(0);
+            player.setSmokeKills(0);
+            player.setFlashDuration(0d);
+            player.setTeamFlashDuration(0d);
+            player.setEnemiesFlashed(0);
+            player.setTeammatesFlashed(0);
+            player.setNoScopeKills(0);
+
+            for (Round round : game.getRounds()) {
+                for (Kill kill : round.getKills()) {
+                    if (kill.getKillerSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        if (kill.getHeadshot()) {
+                            player.setHeadshots(player.getHeadshots() + 1);
+                        }
+                        if (kill.getFriendly()) {
+                            player.setTeamKills(player.getTeamKills() + 1);
+                        } else {
+                            player.setKills(player.getKills() + 1);
+                        }
+                        if (kill.getNoscope()) {
+                            player.setNoScopeKills(player.getNoScopeKills() + 1);
+                        }
+                        if (kill.getPenetrated()) {
+                            player.setWallbangKills(player.getWallbangKills() + 1);
+                        }
+                        if (kill.getThroughSmoke()) {
+                            player.setSmokeKills(player.getSmokeKills() + 1);
+                        }
+                    }
+
+                    if (kill.getAssisted()) {
+                        if (kill.getAssisterSteamId().equalsIgnoreCase(player.getSteamid())) {
+                            if (!kill.getFriendly()) {
+                                player.setAssists(player.getAssists() + 1);
+                                if (kill.getFlashAssist()) {
+                                    player.setFlashAssists(player.getFlashAssists() + 1);
+                                }
+                            }
+                        }
+                    }
+
+                    if (kill.getKilledSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        player.setDeaths(player.getDeaths() + 1);
+                    }
+                }
+
+                for (Damage damage : round.getDamage()) {
+                    if (damage.getAttackerSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        if (damage.getFriendly()) {
+                            player.setTeamDamage(player.getTeamDamage() + damage.getDamage());
+                        } else {
+                            player.setDamage(player.getDamage() + damage.getDamage());
+                        }
+                    }
+                }
+
+                for (Flashbang flashbang : round.getFlashbangs()) {
+                    if (flashbang.getAttackerSteamId().equalsIgnoreCase(player.getSteamid())) {
+                        if (flashbang.getFriendly()) {
+                            player.setTeamFlashDuration(player.getTeamFlashDuration() + flashbang.getDuration());
+                            player.setTeammatesFlashed(player.getTeammatesFlashed() + 1);
+                        } else {
+                            player.setFlashDuration(player.getFlashDuration() + flashbang.getDuration());
+                            player.setEnemiesFlashed(player.getEnemiesFlashed() + 1);
+                        }
+                    }
+                }
+
+            }
+        }
 
         return new ResponseEntity<>(game, HttpStatus.OK);
     }

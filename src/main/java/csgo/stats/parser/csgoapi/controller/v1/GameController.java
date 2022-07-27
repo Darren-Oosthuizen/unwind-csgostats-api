@@ -2,10 +2,10 @@ package csgo.stats.parser.csgoapi.controller.v1;
 
 import csgo.stats.parser.csgoapi.model.Game;
 import csgo.stats.parser.csgoapi.model.response.MatchHistory;
-import csgo.stats.parser.csgoapi.repository.entities.BasicGameEntity;
 import csgo.stats.parser.csgoapi.repository.entities.GameEntity;
 import csgo.stats.parser.csgoapi.services.GameService;
 import csgo.stats.parser.csgoapi.services.PlayerService;
+import csgo.stats.parser.csgoapi.services.ValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +24,14 @@ public class GameController {
 
     private GameService gameService;
     private PlayerService playerService;
+    private ValidationService validationService;
 
     @Autowired
-    public GameController(GameService gameService, PlayerService playerService) {
+    public GameController(GameService gameService, PlayerService playerService,
+                          ValidationService validationService) {
         this.gameService = gameService;
         this.playerService = playerService;
+        this.validationService = validationService;
     }
 
     @PostMapping("/create")
@@ -38,6 +41,15 @@ public class GameController {
 
         //Update Player Stats Involved in the Game
 //        playerService.updatePlayers(gameEntity);
+
+
+        validationService.validate(gameEntity.getId());
+        validationService.validateGameWins();
+        validationService.validateClutchForGame(gameEntity.getId());
+        validationService.validateKnifeKills();
+        validationService.validatePlayerTeams();
+        validationService.validateTeamDamage();
+        validationService.validateHeadToHeadStatistics();
 
         return new ResponseEntity<>(gameEntity, HttpStatus.CREATED);
     }
