@@ -74,4 +74,10 @@ public class GameController {
         return new ResponseEntity<>(gameService.getAllGamesForClanName(team, limit), HttpStatus.OK);
     }
 
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<String> deleteGameEntity(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<>(gameService.deleteGame(id), HttpStatus.ACCEPTED);
+    }
+
+
 }

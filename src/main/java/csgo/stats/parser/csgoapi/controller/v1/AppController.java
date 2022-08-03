@@ -354,7 +354,7 @@ public class AppController {
                     for (TeamPlayerEntity teamPlayer : team.getPlayers()) {
                         if (teamPlayer.getSteamID().equalsIgnoreCase(player.getSteamID())) {
                             for (PlayerGameGunEntity gun : teamPlayer.getGuns()) {
-                                if (gun.getName().toLowerCase().contains("knife")) {
+                                if (gun.getName().toLowerCase().contains("knife") || gun.getName().toLowerCase().contains("bayonet")) {
                                     knifeKills += gun.getKills();
                                     knifeDamage += gun.getDamage();
                                 }

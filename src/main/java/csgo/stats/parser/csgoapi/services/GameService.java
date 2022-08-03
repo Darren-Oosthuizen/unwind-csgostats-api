@@ -80,4 +80,9 @@ public class GameService {
 
         return gameEntity;
     }
+
+    public String deleteGame(Long id) {
+        gameEntityRepository.deleteById(id);
+        return "Worked";
+    }
 }

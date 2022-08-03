@@ -67,4 +67,9 @@ public class PlayerController {
         return new ResponseEntity<>(playerService.getTop5PlayersPerGun(id), HttpStatus.OK);
     }
 
+    @DeleteMapping("/id/{id}")
+    public ResponseEntity<String> deletePlayerEntity(@PathVariable(value = "id") Long id) {
+        return new ResponseEntity<>(playerService.deletePlayer(id), HttpStatus.ACCEPTED);
+    }
+
 }

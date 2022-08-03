@@ -595,4 +595,9 @@ public class PlayerService {
         mostKills.setValue(mostKillsPlayer.getKills().toString());
         return mostKills;
     }
+
+    public String deletePlayer(Long id) {
+        playerEntityRepository.deleteById(id);
+        return "Worker";
+    }
 }
