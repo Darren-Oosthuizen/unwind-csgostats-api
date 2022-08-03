@@ -774,4 +774,58 @@ public class AppController {
 
         return new ResponseEntity<>(game, HttpStatus.OK);
     }
+
+    @GetMapping("/validate/players")
+    public ResponseEntity<String> validatePlayerStats() {
+        List<PlayerEntity> playerList = playerEntityRepository.findAll();
+
+        for (PlayerEntity player : playerList) {
+            player.setKills(0);
+            player.setDeaths(0);
+            player.setAssists(0);
+            player.setDamage(0L);
+            player.setTeamDamage(0L);
+            player.setAdr(0);
+            int totalRounds = 0;
+            for (GameEntity game : player.getGames()) {
+                totalRounds += game.getRounds().size();
+                for (RoundEntity round : game.getRounds()) {
+                    for (KillEntity kill: round.getKills()) {
+                        if (kill.getKillerSteamId().equalsIgnoreCase(player.getSteamID())) {
+                            player.setKills(player.getKills() + 1);
+                        }
+                        if (kill.getKilledSteamId().equalsIgnoreCase(player.getSteamID())) {
+                            player.setDeaths(player.getDeaths() + 1);
+                        }
+                        if (kill.getAssisted() && kill.getAssisterSteamId().equalsIgnoreCase(player.getSteamID())) {
+                            player.setAssists(player.getAssists() + 1);
+                        }
+                    }
+
+                    for (RoundDamageEntity damage : round.getDamage()) {
+                        if (damage.getFriendly()) {
+                            if (damage.getAttackerSteamId().equalsIgnoreCase(player.getSteamID())) {
+                                player.setTeamDamage(player.getTeamDamage() + damage.getDamage());
+                            }
+                        } else {
+                            if (damage.getAttackerSteamId().equalsIgnoreCase(player.getSteamID())) {
+                                player.setDamage(player.getDamage() + damage.getDamage());
+                            }
+                        }
+                    }
+                }
+            }
+            if (totalRounds != 0) {
+                player.setAdr((int) (player.getDamage() / totalRounds));
+            }
+            if (player.getDeaths() != 0) {
+                player.setKd(new BigDecimal(player.getKills()).divide(new BigDecimal(player.getDeaths()), 2, RoundingMode.HALF_UP));
+            } else {
+                player.setKd(new BigDecimal(player.getKills()).divide(new BigDecimal(1), 2, RoundingMode.HALF_UP));
+            }
+            playerEntityRepository.save(player);
+        }
+
+        return new ResponseEntity<>("Done.", HttpStatus.OK);
+    }
 }
