@@ -19,6 +19,7 @@ public class GameEntityMapper {
         gameEntity.setMap(game.getMap());
         gameEntity.setCTScore(game.getCtscore());
         gameEntity.setTScore(game.getTscore());
+        gameEntity.setDate(game.getDate());
 
         //Create team 1
         GameTeamEntity team1 = getGameTeamEntity(game.getTeam1(), game.getTeam1().getName());
